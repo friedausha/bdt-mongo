@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to BDT - Mongo
+
+  // Wrapper
+  #wrapper
+
+    h2 Add Country
+    #addCountry
+      fieldset
+          input#inputCountryName(type='text', placeholder='Name')
+          input#inputCountryCode(type='text', placeholder='Code')
+          br
+          button#btnAddCountry Add Country
+      // /ADD USER
+    // USER INFO
+    #countryInfo
+        h2 Country Info
+        p
+            strong Name:
+            |  <span id='countryInfoName'></span>
+            br
+            strong Code:
+            |  <span id='countryInfoCode'></span>
+            br
+    // /USER INFO
+    // USER LIST
+    h2 Country List
+    #countryList
+      table
+        thead
+          th Country Name
+          th Code
+          th Delete?
+        tbody
+    // /USER LIST
+
+// /WRAPPER
