@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/bdt-mongo');
+var db = monk('192.168.33.11:27017/bdt-mongo');
 
 var indexRouter = require('./routes/index');
 var countriesRouter = require('./routes/countries');
