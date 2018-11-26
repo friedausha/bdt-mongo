@@ -4,9 +4,68 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk('192.168.33.11:27017/countries');
+// var mongo = require('mongodb');
+// var monk = require('monk');
+// var db = monk('192.168.33.11:27017/countries');
+
+var async = require('async');
+//Connect to the cluster
+var ExpressCassandra = require('express-cassandra');
+var models = ExpressCassandra.createClient({
+    clientOptions: {
+        contactPoints: ['127.0.0.1'],
+        protocolOptions: { port: 9042 },
+        keyspace: 'mykeyspace',
+        queryOptions: {consistency: ExpressCassandra.consistencies.one}
+    },
+    ormOptions: {
+        defaultReplicationStrategy : {
+            class: 'SimpleStrategy',
+            replication_factor: 1
+        },
+        migration: 'safe',
+    }
+});
+
+
+const countryModel = models.loadSchema('countries', {
+    fields: {
+        country: "varchar",
+        region: "varchar",
+        population: "varchar",
+        area: "varchar",
+        population_density: "varchar",
+        coastline: "varchar",
+        net_migration: "varchar",
+        infant_mortality: "varchar",
+        gdp: "varchar",
+        literacy: "varchar",
+        phones: "varchar",
+        arable: "varchar",
+        crops: "varchar",
+        other: "varchar",
+        climate: "varchar",
+        birthrate: "varchar",
+        deathrate: "varchar",
+        agriculture: "varchar",
+        industry: "varchar",
+        service: "varchar",
+
+    },
+    key: ["country"]
+});
+
+// MyModel or models.instance.Person can now be used as the models instance
+console.log(models.instance.countries === countryModel);
+
+// sync the schema definition with the cassandra database table
+// if the schema has not changed, the callback will fire immediately
+// otherwise express-cassandra will try to migrate the schema and fire the callback afterwards
+countryModel.syncDB(function(err, result) {
+    if (err) throw err;
+    // result == true if any database schema was updated
+    // result == false if no schema change was detected in your models
+});
 
 var indexRouter = require('./routes/index');
 var countriesRouter = require('./routes/countries');

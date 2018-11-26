@@ -52,7 +52,8 @@ function showCountryInfo(event) {
 
     //Populate Info Box
     $('#countryInfoName').text(thisCountryObject.name);
-    $('#countryInfoCode').text(thisCountryObject.code);
+    $('#countryInfoRegion ').text(thisCountryObject.code);
+    $('#countryInfoPopulation').text(thisCountryObject.population);
 
 };
 
@@ -71,8 +72,9 @@ function addCountry(event) {
 
         // If it is, compile all user info into one object
         var newCountry = {
-            'name': $('#addCountry input#inputCountryName').val(),
-            'code': $('#addCountry input#inputCountryCode').val(),
+            'name'  : $('#addCountry input#inputCountryName').val(),
+            'region': $('#addCountry input#inputCountryRegion').val(),
+            'population': $('#addCountry input#inputCountryPopulation').val(),
         }
 
         // Use AJAX to post the object to our adduser service
